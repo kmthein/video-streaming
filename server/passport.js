@@ -1,10 +1,11 @@
 const passport = require("passport");
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
+require("dotenv").config();
 
 passport.use(new GoogleStrategy({
-    clientID: "514057168896-vmhaa8b8ioo20jclala6hv6pj0jujtgu.apps.googleusercontent.com",
-    clientSecret: "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",
-    callbackURL: "http://localhost:8080/auth/google/callback",
+    clientID: process.env.ClientID,
+    clientSecret: process.env.ClientSecret,
+    callbackURL: process.env.CallbackURL,
     scope: ["profile", "email", "https://www.googleapis.com/auth/youtube"],
   },
   function(accessToken, refreshToken, profile, callback) {
