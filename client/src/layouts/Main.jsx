@@ -199,7 +199,7 @@ const Main = () => {
         <div className={`${menuOpen ? "mr-2" : "xl:mr-20"}`}>
           <Sidebar navOpen={menuOpen} />
         </div>
-        <div className=" dark:bg-[#1a1a1a] w-full">
+        <div className=" dark:bg-[#1a1a1a] w-full overflow-hidden">
           <Outlet />
         </div>
       </div>

@@ -9,6 +9,7 @@ import History from "./pages/History";
 import LikeVideo from "./pages/LikeVideo";
 import SearchResult from "./pages/SearchResult";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -47,6 +48,10 @@ const App = () => {
         {
           path: "/login",
           element: <Login />
+        },
+        {
+          path: "/register",
+          element: <Register />
         },
       ]
     },
