@@ -1,7 +1,11 @@
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import { toggleMenu } from "@/store/slices/uiSlice";
-import { setAccessToken, setMyChannel, setUser } from "@/store/slices/userSlice";
+import {
+  setAccessToken,
+  setMyChannel,
+  setUser,
+} from "@/store/slices/userSlice";
 import {
   addHomeVideos,
   addSearchItems,
@@ -11,6 +15,7 @@ import {
 import axios from "axios";
 import { Menu } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useParams } from "react-router-dom";
 
@@ -23,39 +28,50 @@ const Main = () => {
     (state) => state.video
   );
 
-    const getUser = async () => {
-    const response = await axios.get(`${import.meta.env.VITE_API}/auth/login/success`, {withCredentials: true});
+  const getUser = async () => {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API}/auth/login/success`,
+      { withCredentials: true }
+    );
     const { accessToken, profile } = response.data.user;
-    dispatch(setUser(profile._json))
-    dispatch(setAccessToken(accessToken))
-  }
+    dispatch(setUser(profile._json));
+    dispatch(setAccessToken(accessToken));
+  };
 
   useEffect(() => {
-    getUser();
-  }, [accessToken])
-
+      getUser();
+  }, [accessToken]);
 
   const getMyChannelDetails = async () => {
     const response = await axios.get(
-      `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&mine=true&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`, {
+      `https://youtube.googleapis.com/youtube/v3/channels?part=snippet&mine=true&key=${
+        import.meta.env.VITE_YOUTUBE_API_KEY
+      }`,
+      {
         headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+          Authorization: `Bearer ${accessToken}`,
+        },
       }
-    )
+    );
     const res = await axios.get(
-      `https://youtube.googleapis.com/youtube/v3/subscriptions?part=snippet&maxResults=200&mine=true&key=${import.meta.env.VITE_YOUTUBE_API_KEY}`, {
+      `https://youtube.googleapis.com/youtube/v3/subscriptions?part=snippet&maxResults=200&mine=true&key=${
+        import.meta.env.VITE_YOUTUBE_API_KEY
+      }`,
+      {
         headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-    dispatch(setMyChannel({...response.data.items[0], subscription: res.data.items}));
-  }
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    dispatch(
+      setMyChannel({ ...response.data.items[0], subscription: res.data.items })
+    );
+  };
 
   useEffect(() => {
-      getMyChannelDetails();
-      // getSubscriptionList();
-  }, [accessToken])
+    getMyChannelDetails();
+    // getSubscriptionList();
+  }, [accessToken]);
 
   useEffect(() => {
     if (
@@ -186,6 +202,7 @@ const Main = () => {
       className={`dark:bg-[#313131] dark:text-white max-h-screen overflow-y-scroll scrollbar-thin scrollbar-h-96 scrollbar-thumb-rounded-lg scrollbar-thumb-[#4b4b4b] scrollbar-track-[#ffffff]`}
       ref={ref}
     >
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="flex items-center mx-5">
         <div
           className="p-2 hover:text-gray-500 hover:bg-gray-200 hover:dark:text-gray-200 hover:dark:bg-[#4D4C4C] rounded-full cursor-pointer"

@@ -12,25 +12,32 @@ const Home = () => {
 
   const { homeVideos, nextPageToken } = useSelector((state) => state.video);
 
+  const { accessToken } = useSelector((state) => state.user);
+
   useEffect(() => {
     return () => dispatch(setNextPageToken(""));
-  }, [])
+  }, []);
 
   const getUser = async () => {
-    const response = await axios.get(`${import.meta.env.VITE_API}/auth/login/success`, {withCredentials: true});
+    const response = await axios.get(
+      `${import.meta.env.VITE_API}/auth/login/success`,
+      { withCredentials: true }
+    );
     const { accessToken, profile } = response.data.user;
-    dispatch(setUser(profile._json))
-    dispatch(setAccessToken(accessToken))
+    dispatch(setUser(profile._json));
+    dispatch(setAccessToken(accessToken));
     localStorage.setItem("access-token", accessToken);
-  }
+  };
 
-  useEffect(() => {
-    getUser();
-  }, [])
+    useEffect(() => {
+        getUser();
+    }, []);
 
   return (
     <div
-      className={`md:mx-8 flex flex-wrap gap-5 xl:pt-4 ${menuOpen && "ml-8 mr-0"}`}
+      className={`md:mx-8 flex flex-wrap gap-5 xl:pt-4 ${
+        menuOpen && "ml-8 mr-0"
+      }`}
     >
       {homeVideos &&
         homeVideos.length > 0 &&
