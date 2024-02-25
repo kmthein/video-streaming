@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const prevAccessToken = localStorage.getItem("access-token") || null;
+const prevAccessToken = localStorage.getItem("token") || null;
+const prevUser = localStorage.getItem("user"); 
 
 const initialState = {
     accessToken: prevAccessToken,
-    user: null,
+    user: JSON.parse(prevUser) || null,
     myChannel: null
 }
 const userSlice = createSlice({

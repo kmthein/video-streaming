@@ -26,7 +26,7 @@ const Home = () => {
     const { accessToken, profile } = response.data.user;
     dispatch(setUser(profile._json));
     dispatch(setAccessToken(accessToken));
-    localStorage.setItem("access-token", accessToken);
+    localStorage.setItem("token", accessToken);
   };
 
     useEffect(() => {

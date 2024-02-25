@@ -24,7 +24,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { format, formatDistanceToNow, formatISO, formatISO9075 } from "date-fns";
+import {
+  format,
+  formatDistanceToNow,
+  formatISO,
+  formatISO9075,
+} from "date-fns";
 
 const Details = () => {
   const { menuOpen, darkMode } = useSelector((state) => state.ui);
@@ -96,20 +101,20 @@ const Details = () => {
   const { snippet, statistics, channelDetails } = newVideo;
 
   const getHeight = () => {
-    if(screen.width < 500) {
+    if (screen.width < 500) {
       return "35vh";
     } else if (screen.width < 1100) {
       return "55vh";
     } else {
       return "75vh";
     }
-  }
-  
+  };
+
   const [playerHeight, setPlayerHeight] = useState(getHeight());
 
   useEffect(() => {
     getHeight();
-  }, [screen.width])
+  }, [screen.width]);
 
   return (
     <div className="xl:flex">
@@ -122,41 +127,40 @@ const Details = () => {
           className="rounded-full"
         />
         <div className="px-4 xl:px-0">
-        <h3 className=" font-semibold text-[21px] my-3">{snippet?.title}</h3>
-        <div className="flex justify-between">
-          <div className="flex items-center">
-            <Avatar
-              size={"md"}
-              src={snippet?.thumbnails.standard.url}
-              className="mt-1"
-            />
-            <div className="ml-4">
-              <p className=" dark:text-white/40 font-medium text-lg">
-                {snippet?.channelTitle}
-              </p>
-              <p className="text-sm">
-                {transformViews(channelDetails?.statistics.subscriberCount)}{" "}
-                subscribers
-              </p>
-            </div>
-            <div>
-              <Menu>
-                <MenuButton>
-                  {/* <div className="bg-gray-200 ml-6 py-2 px-3 flex gap-2 rounded-full font-medium">
+          <h3 className=" font-semibold text-[21px] my-3">{snippet?.title}</h3>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <Avatar
+                size={"md"}
+                src={snippet?.thumbnails.standard.url}
+                className="mt-1"
+              />
+              <div className="ml-4">
+                <p className=" dark:text-white/40 font-medium text-lg">
+                  {snippet?.channelTitle}
+                </p>
+                <p className="text-sm">
+                  {transformViews(channelDetails?.statistics.subscriberCount)}{" "}
+                  subscribers
+                </p>
+              </div>
+              <div>
+                <Menu>
+                  <MenuButton>
+                    {/* <div className="bg-gray-200 ml-6 py-2 px-3 flex gap-2 rounded-full font-medium">
                <Bell /> Subscribed <ChevronDownIcon />
               </div> */}
-                  <div className="bg-[#141414] dark:bg-[#313131] text-white ml-6 py-2 px-3 flex gap-2 rounded-full font-medium">
-                    Subscribe
-                  </div>
-                </MenuButton>
-                <MenuList>
-                  <MenuItem>Unsubscribe</MenuItem>
-                </MenuList>
-              </Menu>
+                    <div className="bg-[#141414] dark:bg-[#313131] text-white ml-6 py-2 px-3 flex gap-2 rounded-full font-medium">
+                      Subscribe
+                    </div>
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>Unsubscribe</MenuItem>
+                  </MenuList>
+                </Menu>
+              </div>
             </div>
-            </div>
-          </div>
-          <div className="my-4 xl:my-0">
+            <div className="my-4 xl:my-0">
             <div className="flex">
               <button
                 className={`bg-[#E5E5E5] dark:bg-[#313131] pr-4 pl-2 py-2 flex gap-2 rounded-tl-full rounded-bl-full hover:bg-[#d3d3d3] hover:dark:bg-[#292929]`}
@@ -169,14 +173,29 @@ const Details = () => {
               </button>
             </div>
           </div>
+          </div>
+
         </div>
-        <div className={`bg-[#f3f3f3] ${!accordionOpen && "hover:bg-[#e2e2e2]"} dark:bg-[#272727] dark:hover:bg-[#3b3b3b] p-4 mt-3 rounded-lg mb-8 mx-4 xl:mx-0`}>
-          <h4 className="font-medium">{video?.statistics?.viewCount} views <span className="ml-2">{video?.snippet?.publishedAt ? format(video?.snippet?.publishedAt, 'dd MMMM yyyy') : "LIVE"}</span></h4>
+        <div
+          className={`bg-[#f3f3f3] ${
+            !accordionOpen && "hover:bg-[#e2e2e2]"
+          } dark:bg-[#272727] dark:hover:bg-[#3b3b3b] p-4 mt-3 rounded-lg mb-8 mx-4 xl:mx-0`}
+        >
+          <h4 className="font-medium">
+            {video?.statistics?.viewCount} views{" "}
+            <span className="ml-2">
+              {video?.snippet?.publishedAt
+                ? format(video?.snippet?.publishedAt, "dd MMMM yyyy")
+                : "LIVE"}
+            </span>
+          </h4>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionContent>
-                <span className=" whitespace-pre-wrap">{video?.snippet?.description}</span>
-                </AccordionContent>
+                <span className=" whitespace-pre-wrap">
+                  {video?.snippet?.description}
+                </span>
+              </AccordionContent>
               {!accordionOpen ? (
                 <>
                   {video?.snippet?.description.slice(0, 528)}
@@ -198,7 +217,7 @@ const Details = () => {
           {relatedVideo &&
             relatedVideo.length > 0 &&
             relatedVideo.map((video) => (
-              <RelatedVideos video={video} id={id} />
+              <RelatedVideos video={video} id={id} key={id} />
             ))}
         </div>
       </div>

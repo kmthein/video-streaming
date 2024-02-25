@@ -1,12 +1,14 @@
 import IMAGES from "@/assets/images/Images";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import ErrorStyle from "./ErrorStyle";
 // import { registerUser } from "@/api/auth";
 import toast from "react-hot-toast";
+import { loginUser } from "@/api/auth";
+import { setAccessToken, setUser } from "@/store/slices/userSlice";
 
 const AuthForm = ({ isLogin }) => {
   const { darkMode, menuOpen } = useSelector((state) => state.ui);
@@ -33,20 +35,38 @@ const AuthForm = ({ isLogin }) => {
     password: Yup.string()
       .min(3, "Password must have at least 3 characters.")
       .required("Password is required."),    
-    c_password: Yup.string()
+    c_password: isLogin ? null : Yup.string()
       .required("Please re-type your password.")
       .oneOf([Yup.ref("password")], "Passwords does not match."), 
   })
 
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const onSubmitHandler = async (values) => {
-    console.log(values);
     if(!isLogin) {
       try {
         const response = await registerUser(values);
         if(response.success) {
           toast.success(response.message);
           navigate("/login");
+        } else {
+          throw new Error(response.message)
+        }
+      } catch (err) {
+        toast.error(err.message);
+      }
+    } else {
+      try {
+        const response = await loginUser(values);
+        console.log(response);
+        if(response.success) {
+          dispatch(setUser(response.userDoc));
+          dispatch(setAccessToken(response.token));
+          localStorage.setItem("token", response.token);
+          localStorage.setItem("user", JSON.stringify(response.userDoc));
+          toast.success(response.message);
+          navigate("/");
         } else {
           throw new Error(response.message)
         }

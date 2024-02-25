@@ -10,3 +10,14 @@ export const registerUser = async (payload) => {
         return error.response.data;
     }
 }
+
+export const loginUser = async (payload) => {
+    try {
+        const response = await axiosInstance.post("/auth/user-login", payload, {
+            validateStatus: () => true
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+}

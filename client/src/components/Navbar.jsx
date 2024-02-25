@@ -82,7 +82,8 @@ const Navbar = () => {
     window.open(`${import.meta.env.VITE_API}/auth/logout`, "_self");
     dispatch(setMyChannel(null));
     dispatch(setAccessToken(null));
-    localStorage.removeItem("access-token");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   }
 
   const { isOpen, onOpen, onClose } = useDisclosure();

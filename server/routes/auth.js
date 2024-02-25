@@ -7,6 +7,8 @@ const authController = require("../controllers/auth");
 
 router.post("/user-register", authController.register);
 
+router.post("/user-login", authController.login);
+
 router.get("/login/success", (req, res) => {
 	if (req.user) {
 		const { email, name, picture } = req.user.profile._json;
